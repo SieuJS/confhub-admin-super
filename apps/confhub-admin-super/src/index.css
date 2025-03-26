@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+@import '@spartan-ng/brain/hlm-tailwind-preset.css';
+@import '@angular/cdk/overlay-prebuilt.css';
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}

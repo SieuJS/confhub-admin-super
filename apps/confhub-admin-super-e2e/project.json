@@ -1,0 +1,9 @@
+{
+  "name": "confhub-admin-super-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/confhub-admin-super-e2e/src",
+  "implicitDependencies": ["confhub-admin-super"],
+  "// targets": "to see all targets run: nx show project confhub-admin-super-e2e --web",
+  "targets": {}
+}
