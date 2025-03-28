@@ -1,13 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HlmSwitchComponent } from '@spartan-ng/ui-switch-helm';
 import { ThemeService } from '../services/theme.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, of, switchMap, tap } from 'rxjs';
 @Component({
   selector: 'app-header',
   imports: [CommonModule, HlmSwitchComponent],
   template: `
-  <hlm-switch (changed)="onChangeTheme()" />
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-white dark:text-black">ConfHub</h1>
+    </div>
+      <hlm-switch (checkedChange)="onChangeTheme()" [checked]="isChecked()"/>
+  </div>
   `,
   styles: `
     @reference "../../index.css";
@@ -20,6 +27,12 @@ import { ThemeService } from '../services/theme.service';
 export class HeaderComponent {
   themeService = inject(ThemeService); 
   onChangeTheme() {
+    console.log('toggle dark mode');
     this.themeService.toggleDarkMode();
   }
+  currentTheme = toSignal(this.themeService.theme$.pipe(
+    tap(theme => console.log('current theme', theme))
+  ))
+
+  isChecked = computed(() => this.currentTheme() === 'dark');
 }

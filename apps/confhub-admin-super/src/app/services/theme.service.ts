@@ -66,6 +66,7 @@ export class ThemeService implements OnDestroy {
 
   // D. Expose a public function that allows us to change the theme from anywhere in our application
   public toggleDarkMode(): void {
+    console.log('toggleDarkMode');
     const newTheme =
       localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
     localStorage.setItem('theme', newTheme);
