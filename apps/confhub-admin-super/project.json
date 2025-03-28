@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/confhub-admin-super",
         "index": "apps/confhub-admin-super/src/index.html",
         "browser": "apps/confhub-admin-super/src/main.ts",
-        "polyfills": ["zone.js"],
         "tsConfig": "apps/confhub-admin-super/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
