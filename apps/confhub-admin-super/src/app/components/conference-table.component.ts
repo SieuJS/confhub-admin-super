@@ -15,7 +15,6 @@ import { BrnTableModule, PaginatorState, useBrnColumnManager } from '@spartan-ng
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
-import { hlmMuted } from '@spartan-ng/ui-typography-helm';
 import { debounceTime, map } from 'rxjs';
 import { provideIcons } from '@ng-icons/core';
 
@@ -175,7 +174,6 @@ const PAYMENT_DATA: Payment[] = [
   ],
   providers: [provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown })],
   host: {
-    class: 'w-full',
   },
   template: `
     <div class="flex flex-col justify-between gap-4 sm:flex-row">
@@ -302,6 +300,12 @@ const PAYMENT_DATA: Payment[] = [
       </div>
     </div>
   `,
+  styles : `
+    @reference '../../styles.scss'
+    :host {
+      @apply block container mx-64
+    }
+  `
 })
 export class ConferenceTableComponent {
   protected readonly _rawFilterInput = signal('');
