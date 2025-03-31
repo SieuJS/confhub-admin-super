@@ -6,9 +6,9 @@ import { ConferenceInfoComponent } from "../components/conference-info.component
 @Component({
   selector: 'app-conference-page',
   imports: [CommonModule, ConferenceTableComponent, ConferenceInfoComponent],
-  template: `<p>conference-page works!</p>
-      <app-conference-table/>
-      <app-conference-info/>
+  template: `
+      <app-conference-table class="my-8"/>
+      <app-conference-info class="my-8"/>
   `,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,

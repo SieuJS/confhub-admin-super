@@ -5,9 +5,10 @@ import { HeaderComponent } from "./components/header.component";
   imports: [ RouterModule, HeaderComponent],
   selector: 'app-root',
   template : `
-    <app-header/>
-    <div class="my-4 mx-auto container">
+      <app-header/>
 
+    <div class="mx-auto container">
+      
       <router-outlet></router-outlet>
     </div>
   `,

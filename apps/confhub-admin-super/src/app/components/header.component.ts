@@ -19,7 +19,7 @@ import { filter, map, of, switchMap, tap } from 'rxjs';
   styles: `
     @reference "../../index.css";
     :host {
-      @apply block bg-slate-900 dark:bg-slate-50 
+      @apply block container mx-auto
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

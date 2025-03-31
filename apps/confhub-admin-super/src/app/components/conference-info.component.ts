@@ -82,7 +82,7 @@ import { FormsModule } from '@angular/forms';
     <brn-table
       hlm
       stickyHeader
-      class="border-border mt-4 block h-[335px] overflow-auto rounded-md border"
+      class="border-border mt-4 block h-128 overflow-auto rounded-md border"
       [dataSource]="conference() || []"
       [displayedColumns]="allDisplayedColumns()"
       [trackBy]="trackBy"
