@@ -27,12 +27,9 @@ import { filter, map, of, switchMap, tap } from 'rxjs';
 export class HeaderComponent {
   themeService = inject(ThemeService); 
   onChangeTheme() {
-    console.log('toggle dark mode');
     this.themeService.toggleDarkMode();
   }
-  currentTheme = toSignal(this.themeService.theme$.pipe(
-    tap(theme => console.log('current theme', theme))
-  ))
+  currentTheme = toSignal(this.themeService.theme$.pipe())
 
   isChecked = computed(() => this.currentTheme() === 'dark');
 }

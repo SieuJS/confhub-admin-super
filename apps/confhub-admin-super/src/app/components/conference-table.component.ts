@@ -16,7 +16,7 @@ import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { debounceTime, map } from 'rxjs';
-import { provideIcons } from '@ng-icons/core';
+import { provideIcons, NgIcon } from '@ng-icons/core';
 
 export type Payment = {
   id: string;
@@ -171,6 +171,8 @@ const PAYMENT_DATA: Payment[] = [
 
     BrnSelectModule,
 	  HlmSelectModule,
+
+    NgIcon
   ],
   providers: [provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown })],
   host: {
@@ -274,7 +276,7 @@ const PAYMENT_DATA: Payment[] = [
       class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
       *brnPaginator="let ctx; totalElements: _totalElements(); pageSize: _pageSize(); onStateChange: _onStateChange"
     >
-      <span class="text-sm text-muted-foreground text-sm">{{ _selected().length }} of {{ _totalElements() }} row(s) selected</span>
+      <span class="text-sm text-muted-foreground">{{ _selected().length }} of {{ _totalElements() }} row(s) selected</span>
       <div class="flex mt-2 sm:mt-0">
         <brn-select class="inline-block" placeholder="{{ _availablePageSizes[0] }}" [(ngModel)]="_pageSize">
           <hlm-select-trigger class="inline-flex mr-1 w-15 h-9">

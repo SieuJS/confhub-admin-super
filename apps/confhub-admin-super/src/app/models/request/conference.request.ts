@@ -1,7 +1,9 @@
 export type ConferenceRequest = {
-    keyword : string ; 
-    fromDate : string ; 
-    toDate : string ; 
-    page : number ; 
-    perPage : number ; 
+    search ?: string;
+    status : string ; 
+    source : string[];
+    researchFields : string[];
+    ranks : string[];
+    page : number ;
+    perPage : number ;
 }

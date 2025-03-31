@@ -1,42 +1,25 @@
 export type ConferenceResponse = {
-  payload: ConferenceResponseItem[];
+  data: ConferenceResponseItem[];
   meta: ConferenceResponseMeta;
 };
 
 export type ConferenceResponseItem = {
   id: string;
   title: string;
+  sources: string[];
   acronym: string;
-  location: {
-    cityStateProvince: string;
-    country: string;
-    address: string;
-    continent: string;
-  };
-  rank: string;
-  source: string;
-  year: number;
+  ranks: string[];
   researchFields: string[];
-  topics: string[];
-  dates: {
-    fromDate: string;
-    toDate: string;
-    name: string;
-    type: string;
-  };
-  link: string;
+  status: string;
   createdAt: string;
   updatedAt: string;
-  creatorId: string;
-  accessType: string;
-  status: string;
 };
 
 export type ConferenceResponseMeta = {
-  curPage: number;
+  total: number;
+  lastPage: number;
+  currentPage: number;
   perPage: number;
-  totalPage: number;
-  prevPage: number | null;
-  nextPage: number | null;
-  totalItems: number;
+  prev: number | null;
+  next: number | null;
 };
