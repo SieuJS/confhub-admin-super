@@ -4,8 +4,11 @@ import { HeaderComponent } from "./components/header.component";
 @Component({
   imports: [ RouterModule, HeaderComponent],
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  template : `
+    <app-header/>
+    <router-outlet></router-outlet>
+  `,
+  styles : ``
 })
 export class AppComponent {
   title = 'confhub-admin-super';
