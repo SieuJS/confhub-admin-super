@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from "./components/header.component";
+import { HeaderComponent } from './components/header.component';
+import { SideBarComponent } from './components/side-bar.component';
 @Component({
-  imports: [ RouterModule, HeaderComponent],
+  imports: [RouterModule, HeaderComponent, SideBarComponent],
   selector: 'app-root',
-  template : `
-      <app-header/>
-
-    <div class="mx-auto container">
-      
+  template: `
+    <div class="grid grid-cols-4 grid-rows-1">
+      <app-side-bar class="h-screen col-span-1" />
+      <div class="container col-span-3">
+      <app-header class="py-4" />
       <router-outlet></router-outlet>
+      </div>
+       
     </div>
   `,
-  styles : ``
+  styles: ``,
 })
 export class AppComponent {
   title = 'confhub-admin-super';
