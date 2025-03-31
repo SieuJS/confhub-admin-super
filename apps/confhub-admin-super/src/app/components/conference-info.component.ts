@@ -3,12 +3,13 @@ import {
   Component,
   computed,
   inject,
+  signal,
   TrackByFunction,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConferenceService } from '../services/conference.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, map, of, shareReplay } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { combineLatest, debounceTime, filter, map, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { defaultPerPageOptions } from '../constants';
 import { ConferenceResponseItem } from '../models/response/conference.response';
 import { BrnTableModule, useBrnColumnManager } from '@spartan-ng/brain/table';
@@ -27,12 +28,16 @@ import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmButtonDirective, HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
+import { SelectionModel } from '@angular/cdk/collections';
+import { HlmInputDirective, HlmInputModule } from '@spartan-ng/ui-input-helm';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-conference-info',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
 
     HlmButtonModule,
 
@@ -53,6 +58,8 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
     HlmIconDirective,
     NgIcon,
 
+    HlmInputDirective,
+
     HlmTooltipComponent,
     HlmTooltipTriggerDirective,
     BrnTooltipContentDirective,
@@ -62,6 +69,16 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
   providers : [provideIcons({lucideEllipsis,})],
   template: `
     @if(this.conference() !== undefined){
+      <div class="flex flex-col justify-between gap-4 sm:flex-row">
+      <input
+        hlmInput
+        class="w-full md:w-80"
+        placeholder="Filter acronym, title..."
+        [ngModel]="search()"
+        (ngModelChange)="rawFilterInput.set($event)"
+      />
+      </div>
+
     <brn-table
       hlm
       stickyHeader
@@ -72,10 +89,10 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
     >
       <brn-column-def name="select" class="w-12">
         <hlm-th *brnHeaderDef>
-          <hlm-checkbox />
+          <hlm-checkbox  [checked]="checkboxState()" (changed)="handleHeaderCheckboxChange()" />
         </hlm-th>
         <hlm-td *brnCellDef="let item">
-          <hlm-checkbox />
+          <hlm-checkbox [checked]="isConferenceSelected(item)" (changed)="toggleConference(item)" />
         </hlm-td>
       </brn-column-def>
       <brn-column-def name="id" class="w-32">
@@ -88,7 +105,7 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
           </p>
         </hlm-td>
       </brn-column-def>
-      <brn-column-def name="title" class="w-48 overflow-hidden">
+      <brn-column-def name="title" class="w-48 overflow-hidden lg:flex-1/2">
         <hlm-th *brnHeaderDef>Title</hlm-th>
         <hlm-td *brnCellDef="let item">
           <hlm-tooltip>
@@ -124,7 +141,7 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
           </p>
         </hlm-td>
       </brn-column-def>
-      <brn-column-def name="researchFields" class="w-24">
+      <brn-column-def name="researchFields" class="w-24 lg:flex-1/2">
         <hlm-th *brnHeaderDef>Research Fields</hlm-th>
         <hlm-td *brnCellDef="let item">
           <hlm-tooltip>
@@ -182,11 +199,39 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
       <p class="text-slate-500 dark:text-slate-400">Loading...</p>
     </div>
     }
+    <div
+      class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
+    >
+      <span class="text-sm text-muted-foreground">{{ selected().length }} of {{ conferenceMeta()?.total }} row(s) selected</span>
+      <div class="flex mt-2 sm:mt-0">
+        <brn-select class="inline-block" placeholder="{{ availablePageSizes[0] }}" [(ngModel)]="perPage">
+          <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
+            <hlm-select-value />
+          </hlm-select-trigger>
+          <hlm-select-content>
+            @for (size of availablePageSizes; track size) {
+              <hlm-option [value]="size">
+                {{ size === 10000 ? 'All' : size }}
+              </hlm-option>
+            }
+          </hlm-select-content>
+        </brn-select>
+
+        <div class="flex space-x-1">
+          <button size="sm" variant="outline" hlmBtn [disabled]="!conferenceMeta()?.prev" (click)="decrement()">
+            Previous
+          </button>
+          <button size="sm" variant="outline" hlmBtn [disabled]="!conferenceMeta()?.next" (click)="increment()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
   `,
   styles: `
     @reference '../../styles.scss'
     :host {
-      @apply block container mx-64
+      @apply block container
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -194,13 +239,54 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 export class ConferenceInfoComponent {
   conferenceService = inject(ConferenceService);
 
-  conference$ = this.conferenceService
-    .getConference(undefined)
-    .pipe(shareReplay(2));
+  // filter
+  search = signal('');
+  rawFilterInput = signal('');
+  debouncedFilterInput$ = toObservable(this.rawFilterInput).pipe(
+    startWith(''),
+    debounceTime(500),
+  )
+  perPage = signal<number>(defaultPerPageOptions[0]);
+  page = signal<number>(1);
+  increment = () => this.page.update((page) => page + 1);
+  decrement = () => this.page.update((page) => page - 1);
+
+  conference$ = combineLatest([this.debouncedFilterInput$,toObservable(this.perPage), toObservable(this.page)]) .pipe(
+    filter(([filterInput, perPage, page]) => filterInput !== undefined),
+    switchMap(([filterInput, perPage, page]) => {
+      return this.conferenceService.getConference({
+        page: page,
+        perPage: perPage,
+        search: filterInput,
+      });
+    }),
+    shareReplay(1)
+  )  
 
   conference = toSignal(
-    this.conference$.pipe(map((response) => response.data))
+    this.conference$.pipe(map((response) => response.data)),
+    { initialValue: [] }
   );
+
+  // selection model
+  readonly selectionModel = new SelectionModel<ConferenceResponseItem>(true);
+  protected isConferenceSelected = (conference: ConferenceResponseItem) =>
+    this.selectionModel.isSelected(conference);
+  protected selected = toSignal(this.selectionModel.changed.pipe(
+    map((change) => change.source.selected)
+  ), {initialValue: []});
+
+  protected readonly allConferencesSelected = computed(() => {
+    return this.conference().length > 0 && this.selected().length === this.conference().length;
+  });
+
+  protected readonly availablePageSizes = defaultPerPageOptions;
+
+  protected readonly checkboxState = computed(() => {
+    const noneSelected = this.selected().length === 0;
+    const allSelectedOrIndeterminate = this.allConferencesSelected()? true : 'indeterminate';
+    return noneSelected ? false : allSelectedOrIndeterminate;
+  });
 
   protected readonly brnColumnManager = useBrnColumnManager({
     id: {
@@ -250,4 +336,17 @@ export class ConferenceInfoComponent {
   ) => {
     return item.id;
   };
+
+  protected toggleConference(conference: ConferenceResponseItem) {
+    this.selectionModel.toggle(conference);
+  }
+
+  protected handleHeaderCheckboxChange() {
+    const previousCbState = this.checkboxState();
+    if (previousCbState === 'indeterminate' || !previousCbState) {
+      this.selectionModel.select(...this.conference());
+    } else {
+      this.selectionModel.deselect(...this.conference());
+    }
+  }
 }

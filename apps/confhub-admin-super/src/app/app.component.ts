@@ -6,7 +6,10 @@ import { HeaderComponent } from "./components/header.component";
   selector: 'app-root',
   template : `
     <app-header/>
-    <router-outlet></router-outlet>
+    <div class="my-4 mx-auto container">
+
+      <router-outlet></router-outlet>
+    </div>
   `,
   styles : ``
 })
