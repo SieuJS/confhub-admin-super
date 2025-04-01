@@ -18,18 +18,18 @@ import {
   HlmCheckboxComponent,
   HlmCheckboxModule,
 } from '@spartan-ng/ui-checkbox-helm';
-import { BrnSelectModule } from '@spartan-ng/brain/select';
-import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
+import {  BrnSelectImports, BrnSelectModule } from '@spartan-ng/brain/select';
+import { HlmSelectImports, HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
 import { HlmMenuModule } from '@spartan-ng/ui-menu-helm';
-import { lucideEllipsis } from '@ng-icons/lucide';
+import { lucideChevronDown, lucideChevronUp, lucideEllipsis } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmButtonDirective, HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { SelectionModel } from '@angular/cdk/collections';
-import { HlmInputDirective, HlmInputModule } from '@spartan-ng/ui-input-helm';
+import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -46,14 +46,10 @@ import { FormsModule } from '@angular/forms';
 
     BrnMenuTriggerDirective,
     HlmMenuModule,
-    BrnSelectModule,
     HlmSelectModule,
 
     HlmCheckboxComponent,
     HlmCheckboxModule,
-
-    BrnSelectModule,
-    HlmSelectModule,
 
     HlmIconDirective,
     NgIcon,
@@ -65,8 +61,12 @@ import { FormsModule } from '@angular/forms';
     BrnTooltipContentDirective,
     HlmButtonDirective,
     HlmIconDirective,
+
+    BrnSelectImports,
+    HlmSelectImports,
+  
   ],
-  providers : [provideIcons({lucideEllipsis,})],
+  providers : [provideIcons({lucideEllipsis,lucideChevronUp, lucideChevronDown})],
   template: `
     @if(this.conference() !== undefined){
       <div class="flex flex-col justify-between gap-4 sm:flex-row">
@@ -77,8 +77,20 @@ import { FormsModule } from '@angular/forms';
         [ngModel]="search()"
         (ngModelChange)="rawFilterInput.set($event)"
       />
+      <brn-select class="inline-block" multiple="true" placeholder="Choose source"  [(ngModel)]="sourceSelection" (ngModelChange)="toggleSourceSelection($event)">
+      <hlm-select-trigger class="w-56">
+        <hlm-select-value/>
+      </hlm-select-trigger>
+      <hlm-select-content>
+          @for (source of sources; track source) {
+            <hlm-option [value]="source" class="flex items-center gap-2">
+              {{ source }}
+            </hlm-option>
+          }
+      </hlm-select-content>
+    </brn-select>
       </div>
-
+      
     <brn-table
       hlm
       stickyHeader
@@ -238,7 +250,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ConferenceInfoComponent {
   conferenceService = inject(ConferenceService);
-
+  sources = ['CORE2023', 'CORE2020']
   // filter
   search = signal('');
   rawFilterInput = signal('');
@@ -251,13 +263,30 @@ export class ConferenceInfoComponent {
   increment = () => this.page.update((page) => page + 1);
   decrement = () => this.page.update((page) => page - 1);
 
-  conference$ = combineLatest([this.debouncedFilterInput$,toObservable(this.perPage), toObservable(this.page)]) .pipe(
+  // source of truth
+  sourceSelection = signal<string[]>([]);
+  toggleSourceSelection = (newSortSelects: string[]) => {
+    const newSource = newSortSelects.pop();
+    this.sourceSelection.update((sources) => {
+      if (newSource === undefined) {
+        return sources;
+      }
+      if (sources.includes(newSource)) {
+        return sources.filter((source) => source !== newSource);
+      } else {
+        return [...sources, newSource];
+      }
+    })
+  };
+
+  conference$ = combineLatest([this.debouncedFilterInput$,toObservable(this.perPage), toObservable(this.page), toObservable(this.sourceSelection)]) .pipe(
     filter(([filterInput, perPage, page]) => filterInput !== undefined),
-    switchMap(([filterInput, perPage, page]) => {
+    switchMap(([filterInput, perPage, page, sources]) => {
       return this.conferenceService.getConference({
         page: page,
         perPage: perPage,
         search: filterInput,
+        source: sources,
       });
     }),
     shareReplay(1)
