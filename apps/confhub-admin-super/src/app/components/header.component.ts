@@ -40,12 +40,9 @@ import {
     HlmMenuComponent,
     HlmMenuGroupComponent,
     HlmMenuItemDirective,
-    HlmMenuItemIconDirective,
-    HlmMenuItemSubIndicatorComponent,
     HlmMenuLabelComponent,
     HlmMenuSeparatorComponent,
     HlmMenuShortcutComponent,
-    HlmSubMenuComponent,
     BrnMenuTriggerDirective,
   ],
   template: `
