@@ -8,12 +8,13 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/confhub-admin-super",
         "index": "apps/confhub-admin-super/src/index.html",
         "browser": "apps/confhub-admin-super/src/main.ts",
-        "polyfills": ["zone.js"],
         "tsConfig": "apps/confhub-admin-super/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -22,7 +23,9 @@
             "input": "apps/confhub-admin-super/public"
           }
         ],
-        "styles": ["apps/confhub-admin-super/src/styles.scss"],
+        "styles": [
+          "apps/confhub-admin-super/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -44,7 +47,13 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/confhub-admin-super/src/environments/environment.ts",
+              "with": "apps/confhub-admin-super/src/environments/environment.development.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -72,7 +81,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/confhub-admin-super/jest.config.ts"
       }
