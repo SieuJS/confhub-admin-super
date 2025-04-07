@@ -69,7 +69,7 @@ class ConferenceImportPageComponent {
   conferenceImport$ = this.filesControl.valueChanges.pipe(
     filter((file) => file !== null),
     switchMap((files: File[]) => {
-      return this.conferenceService.uploadFileCsv(files[0]);
+      return this.conferenceService.uploadEvaluatedFileCsv(files[0]);
     }),
     catchError((error) => {
       console.error('Error parsing CSV file:', error);

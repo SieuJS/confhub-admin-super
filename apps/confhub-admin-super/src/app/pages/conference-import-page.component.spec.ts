@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConferenceImportPageComponent } from './conference-import-page.component';
+import ConferenceImportPageComponent from './conference-import-page.component';
 
 describe('ConferenceImportPageComponent', () => {
   let component: ConferenceImportPageComponent;

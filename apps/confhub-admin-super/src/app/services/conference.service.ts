@@ -23,4 +23,11 @@ export class ConferenceService {
     formData.append('file', file);
     return this.httpClient.post<ConferenceImportResponse>(url, formData);
   }
+
+  uploadEvaluatedFileCsv(file: File) {
+    const url = `${this.apiUrl}/admin-conference/import-evaluate`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post<ConferenceImportResponse>(url, formData);
+  }
 }
