@@ -30,7 +30,7 @@ export class HlmCaptionComponent {
   private readonly _table = inject(HlmTableComponent, { optional: true });
 
   protected readonly id = input<string | null | undefined>(
-    `${captionIdSequence++}`
+    `${captionIdSequence++}`,
   );
 
   public readonly hidden = input(false, { transform: booleanAttribute });
@@ -39,8 +39,8 @@ export class HlmCaptionComponent {
     hlm(
       'text-center block mt-4 text-sm text-muted-foreground',
       this.hidden() ? 'sr-only' : 'order-last',
-      this.userClass()
-    )
+      this.userClass(),
+    ),
   );
 
   constructor() {

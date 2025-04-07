@@ -6,7 +6,7 @@ export * from './lib/hlm-date-picker.token';
 export * from './lib/hlm-date-picker.component';
 
 @NgModule({
-	imports: [HlmDatePickerComponent],
-	exports: [HlmDatePickerComponent],
+  imports: [HlmDatePickerComponent],
+  exports: [HlmDatePickerComponent],
 })
 export class HlmDatePickerModule {}

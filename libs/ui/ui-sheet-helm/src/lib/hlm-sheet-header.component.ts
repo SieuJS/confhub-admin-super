@@ -13,6 +13,6 @@ import type { ClassValue } from 'clsx';
 export class HlmSheetHeaderComponent {
   public readonly userClass = input<ClassValue>('', { alias: 'class' });
   protected _computedClass = computed(() =>
-    hlm('flex flex-col space-y-2 text-center sm:text-left', this.userClass())
+    hlm('flex flex-col space-y-2 text-center sm:text-left', this.userClass()),
   );
 }

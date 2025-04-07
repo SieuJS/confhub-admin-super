@@ -9,10 +9,9 @@ import { SideBarComponent } from './components/side-bar.component';
     <div class="grid grid-cols-4 grid-rows-1 m-0 p-0">
       <app-side-bar class="h-screen col-span-1" />
       <div class="container col-span-3">
-      <app-header class="py-4" />
-      <router-outlet></router-outlet>
+        <app-header class="py-4" />
+        <router-outlet></router-outlet>
       </div>
-       
     </div>
   `,
   styles: ``,

@@ -1,9 +1,15 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, OnDestroy, PLATFORM_ID, RendererFactory2 } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  OnDestroy,
+  PLATFORM_ID,
+  RendererFactory2,
+} from '@angular/core';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService implements OnDestroy {
   // A. Setting up our dependencies
@@ -43,7 +49,7 @@ export class ThemeService implements OnDestroy {
     if (isPlatformBrowser(this._platformId)) {
       // we load the appropriate value from the localStorage into our _theme$ replaysubject
       this._theme$.next(
-        localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+        localStorage.getItem('theme') === 'dark' ? 'dark' : 'light',
       );
     }
   }

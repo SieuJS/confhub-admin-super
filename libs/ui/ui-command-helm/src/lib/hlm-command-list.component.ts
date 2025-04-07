@@ -22,6 +22,6 @@ export class HlmCommandListComponent {
 
   /** The styles to apply  */
   protected readonly _computedClass = computed(() =>
-    hlm('max-h-[300px] overflow-x-hidden overflow-y-auto', this.userClass())
+    hlm('max-h-[300px] overflow-x-hidden overflow-y-auto', this.userClass()),
   );
 }

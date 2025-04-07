@@ -17,7 +17,7 @@ export class HlmSeparatorDirective {
     hlm(
       'inline-flex shrink-0 border-0 bg-border',
       this.orientation() === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]',
-      this.userClass()
-    )
+      this.userClass(),
+    ),
   );
 }

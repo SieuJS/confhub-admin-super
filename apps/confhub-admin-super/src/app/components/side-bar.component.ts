@@ -25,19 +25,19 @@ import { RouterLink } from '@angular/router';
         class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700 dark:text-gray-300"
       >
         @for (item of menuItems; track $index) {
-        <a
-          [routerLink]="item.route"
-          class=" hover:cursor-pointer flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 dark:active:bg-gray-700 text-gray-900 dark:text-gray-300"
-        >
-          <div class="grid place-items-center mr-4 ">
-            <img [src]="item.icon" class="inline-block w-9 h-9 rounded-md" />
-          </div>
-          <p
-            class="block antialiased font-sans text-base leading-relaxed mr-auto font-normal"
+          <a
+            [routerLink]="item.route"
+            class=" hover:cursor-pointer flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-100 dark:hover:bg-gray-700 dark:focus:bg-gray-700 dark:active:bg-gray-700 text-gray-900 dark:text-gray-300"
           >
-            {{ item.label }}
-          </p>
-        </a>
+            <div class="grid place-items-center mr-4 ">
+              <img [src]="item.icon" class="inline-block w-9 h-9 rounded-md" />
+            </div>
+            <p
+              class="block antialiased font-sans text-base leading-relaxed mr-auto font-normal"
+            >
+              {{ item.label }}
+            </p>
+          </a>
         }
       </nav>
       <hr class="my-2 border-gray-200 dark:border-gray-700" />

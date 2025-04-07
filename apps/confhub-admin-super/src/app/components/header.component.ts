@@ -74,22 +74,23 @@ import {
 
             <hlm-menu-separator />
             <button hlmMenuItem>
-              Dark 
+              Dark
               <hlm-menu-shortcut>
-                <hlm-switch (checkedChange)="onChangeTheme()" [checked]="isChecked()"/>
+                <hlm-switch
+                  (checkedChange)="onChangeTheme()"
+                  [checked]="isChecked()"
+                />
               </hlm-menu-shortcut>
             </button>
-            
           </hlm-menu-group>
         </hlm-menu>
       </ng-template>
-
     </div>
   `,
   styles: `
     @reference "../../index.css";
     :host {
-      @apply block
+      @apply block;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

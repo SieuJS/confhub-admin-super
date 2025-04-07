@@ -1,6 +1,6 @@
-import { ConferenceResponseItem } from "./conference.response";
+import { ConferenceResponseItem } from './conference.response';
 
 export type ConferenceImportResponse = {
-    message : string;
-    data : ConferenceResponseItem[] | undefined;
-}
+  message: string;
+  data: ConferenceResponseItem[] | undefined;
+};

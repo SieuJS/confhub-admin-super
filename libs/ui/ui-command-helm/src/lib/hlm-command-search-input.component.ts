@@ -21,7 +21,7 @@ export class HlmCommandSearchInputComponent {
   protected readonly _computedClass = computed(() =>
     hlm(
       'bg-transparent disabled:cursor-not-allowed disabled:opacity-50 h-11 outline-none placeholder:text-muted-foreground py-3 text-sm w-full',
-      this.userClass()
-    )
+      this.userClass(),
+    ),
   );
 }

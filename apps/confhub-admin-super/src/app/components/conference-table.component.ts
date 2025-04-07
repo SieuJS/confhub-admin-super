@@ -1,17 +1,31 @@
-
 import { SelectionModel } from '@angular/cdk/collections';
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, TrackByFunction, computed, effect, signal, untracked } from '@angular/core';
+import {
+  Component,
+  TrackByFunction,
+  computed,
+  effect,
+  signal,
+  untracked,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { lucideArrowUpDown, lucideChevronDown, lucideEllipsis } from '@ng-icons/lucide';
+import {
+  lucideArrowUpDown,
+  lucideChevronDown,
+  lucideEllipsis,
+} from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
 import { HlmMenuModule } from '@spartan-ng/ui-menu-helm';
-import { BrnTableModule, PaginatorState, useBrnColumnManager } from '@spartan-ng/brain/table';
+import {
+  BrnTableModule,
+  PaginatorState,
+  useBrnColumnManager,
+} from '@spartan-ng/brain/table';
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
@@ -170,13 +184,14 @@ const PAYMENT_DATA: Payment[] = [
     HlmCheckboxComponent,
 
     BrnSelectModule,
-	  HlmSelectModule,
+    HlmSelectModule,
 
-    NgIcon
+    NgIcon,
   ],
-  providers: [provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown })],
-  host: {
-  },
+  providers: [
+    provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown }),
+  ],
+  host: {},
   template: `
     <div class="flex flex-col justify-between gap-4 sm:flex-row">
       <input
@@ -218,10 +233,16 @@ const PAYMENT_DATA: Payment[] = [
     >
       <brn-column-def name="select" class="w-12">
         <hlm-th *brnHeaderDef>
-          <hlm-checkbox [checked]="_checkboxState()" (changed)="handleHeaderCheckboxChange()" />
+          <hlm-checkbox
+            [checked]="_checkboxState()"
+            (changed)="handleHeaderCheckboxChange()"
+          />
         </hlm-th>
         <hlm-td *brnCellDef="let element">
-          <hlm-checkbox [checked]="_isPaymentSelected(element)" (changed)="togglePayment(element)" />
+          <hlm-checkbox
+            [checked]="_isPaymentSelected(element)"
+            (changed)="togglePayment(element)"
+          />
         </hlm-td>
       </brn-column-def>
       <brn-column-def name="status" class="w-32 sm:w-40">
@@ -232,7 +253,12 @@ const PAYMENT_DATA: Payment[] = [
       </brn-column-def>
       <brn-column-def name="email" class="w-60 lg:flex-1">
         <hlm-th *brnHeaderDef>
-          <button hlmBtn size="sm" variant="ghost" (click)="handleEmailSortChange()">
+          <button
+            hlmBtn
+            size="sm"
+            variant="ghost"
+            (click)="handleEmailSortChange()"
+          >
             Email
             <ng-icon hlm class="ml-3" size="sm" name="lucideArrowUpDown" />
           </button>
@@ -244,13 +270,19 @@ const PAYMENT_DATA: Payment[] = [
       <brn-column-def name="amount" class="justify-end w-20">
         <hlm-th *brnHeaderDef>Amount</hlm-th>
         <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
-          $ {{ element.amount | number: '1.2-2'}}
+          $ {{ element.amount | number: '1.2-2' }}
         </hlm-td>
       </brn-column-def>
       <brn-column-def name="actions" class="w-16">
         <hlm-th *brnHeaderDef></hlm-th>
         <hlm-td *brnCellDef="let element">
-          <button hlmBtn variant="ghost" class="h-6 w-6 p-0.5" align="end" [brnMenuTriggerFor]="menu">
+          <button
+            hlmBtn
+            variant="ghost"
+            class="h-6 w-6 p-0.5"
+            align="end"
+            [brnMenuTriggerFor]="menu"
+          >
             <ng-icon hlm size="sm" name="lucideEllipsis" />
           </button>
 
@@ -270,15 +302,32 @@ const PAYMENT_DATA: Payment[] = [
           </ng-template>
         </hlm-td>
       </brn-column-def>
-      <div class="flex items-center justify-center p-20 text-muted-foreground" brnNoDataRow>No data</div>
+      <div
+        class="flex items-center justify-center p-20 text-muted-foreground"
+        brnNoDataRow
+      >
+        No data
+      </div>
     </brn-table>
     <div
       class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
-      *brnPaginator="let ctx; totalElements: _totalElements(); pageSize: _pageSize(); onStateChange: _onStateChange"
+      *brnPaginator="
+        let ctx;
+        totalElements: _totalElements();
+        pageSize: _pageSize();
+        onStateChange: _onStateChange
+      "
     >
-      <span class="text-sm text-muted-foreground">{{ _selected().length }} of {{ _totalElements() }} row(s) selected</span>
+      <span class="text-sm text-muted-foreground"
+        >{{ _selected().length }} of {{ _totalElements() }} row(s)
+        selected</span
+      >
       <div class="flex mt-2 sm:mt-0">
-        <brn-select class="inline-block" placeholder="{{ _availablePageSizes[0] }}" [(ngModel)]="_pageSize">
+        <brn-select
+          class="inline-block"
+          placeholder="{{ _availablePageSizes[0] }}"
+          [(ngModel)]="_pageSize"
+        >
           <hlm-select-trigger class="inline-flex mr-1 w-15 h-9">
             <hlm-select-value />
           </hlm-select-trigger>
@@ -292,37 +341,55 @@ const PAYMENT_DATA: Payment[] = [
         </brn-select>
 
         <div class="flex space-x-1">
-          <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.decrementable()" (click)="ctx.decrement()">
+          <button
+            size="sm"
+            variant="outline"
+            hlmBtn
+            [disabled]="!ctx.decrementable()"
+            (click)="ctx.decrement()"
+          >
             Previous
           </button>
-          <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.incrementable()" (click)="ctx.increment()">
+          <button
+            size="sm"
+            variant="outline"
+            hlmBtn
+            [disabled]="!ctx.incrementable()"
+            (click)="ctx.increment()"
+          >
             Next
           </button>
         </div>
       </div>
     </div>
   `,
-  styles : `
+  styles: `
     @reference '../../styles.scss'
     :host {
-      @apply block container mx-64
+      @apply block container mx-64;
     }
-  `
+  `,
 })
 export class ConferenceTableComponent {
   protected readonly _rawFilterInput = signal('');
   protected readonly _emailFilter = signal('');
-  private readonly _debouncedFilter = toSignal(toObservable(this._rawFilterInput).pipe(debounceTime(300)));
+  private readonly _debouncedFilter = toSignal(
+    toObservable(this._rawFilterInput).pipe(debounceTime(300)),
+  );
 
   private readonly _displayedIndices = signal({ start: 0, end: 0 });
   protected readonly _availablePageSizes = [5, 10, 20, 10000];
   protected readonly _pageSize = signal(this._availablePageSizes[0]);
 
   private readonly _selectionModel = new SelectionModel<Payment>(true);
-  protected readonly _isPaymentSelected = (payment: Payment) => this._selectionModel.isSelected(payment);
-  protected readonly _selected = toSignal(this._selectionModel.changed.pipe(map((change) => change.source.selected)), {
-    initialValue: [],
-  });
+  protected readonly _isPaymentSelected = (payment: Payment) =>
+    this._selectionModel.isSelected(payment);
+  protected readonly _selected = toSignal(
+    this._selectionModel.changed.pipe(map((change) => change.source.selected)),
+    {
+      initialValue: [],
+    },
+  );
 
   protected readonly _brnColumnManager = useBrnColumnManager({
     status: { visible: true, label: 'Status' },
@@ -339,7 +406,9 @@ export class ConferenceTableComponent {
   private readonly _filteredPayments = computed(() => {
     const emailFilter = this._emailFilter()?.trim()?.toLowerCase();
     if (emailFilter && emailFilter.length > 0) {
-      return this._payments().filter((u) => u.email.toLowerCase().includes(emailFilter));
+      return this._payments().filter((u) =>
+        u.email.toLowerCase().includes(emailFilter),
+      );
     }
     return this._payments();
   });
@@ -353,30 +422,44 @@ export class ConferenceTableComponent {
       return payments.slice(start, end);
     }
     return [...payments]
-      .sort((p1, p2) => (sort === 'ASC' ? 1 : -1) * p1.email.localeCompare(p2.email))
+      .sort(
+        (p1, p2) =>
+          (sort === 'ASC' ? 1 : -1) * p1.email.localeCompare(p2.email),
+      )
       .slice(start, end);
   });
   protected readonly _allFilteredPaginatedPaymentsSelected = computed(() =>
-    this._filteredSortedPaginatedPayments().every((payment) => this._selected().includes(payment)),
+    this._filteredSortedPaginatedPayments().every((payment) =>
+      this._selected().includes(payment),
+    ),
   );
   protected readonly _checkboxState = computed(() => {
     const noneSelected = this._selected().length === 0;
-    const allSelectedOrIndeterminate = this._allFilteredPaginatedPaymentsSelected() ? true : 'indeterminate';
+    const allSelectedOrIndeterminate =
+      this._allFilteredPaginatedPaymentsSelected() ? true : 'indeterminate';
     return noneSelected ? false : allSelectedOrIndeterminate;
   });
 
-  protected readonly _trackBy: TrackByFunction<Payment> = (_: number, p: Payment) => p.id;
-  protected readonly _totalElements = computed(() => this._filteredPayments().length);
-  protected readonly _onStateChange = ({ startIndex, endIndex }: PaginatorState) =>
+  protected readonly _trackBy: TrackByFunction<Payment> = (
+    _: number,
+    p: Payment,
+  ) => p.id;
+  protected readonly _totalElements = computed(
+    () => this._filteredPayments().length,
+  );
+  protected readonly _onStateChange = ({
+    startIndex,
+    endIndex,
+  }: PaginatorState) =>
     this._displayedIndices.set({ start: startIndex, end: endIndex });
 
   constructor() {
     // needed to sync the debounced filter to the name filter, but being able to override the
     // filter when loading new users without debounce
-		effect(() => {
-			const debouncedFilter = this._debouncedFilter();
-			untracked(() => this._emailFilter.set(debouncedFilter ?? ''));
-		});
+    effect(() => {
+      const debouncedFilter = this._debouncedFilter();
+      untracked(() => this._emailFilter.set(debouncedFilter ?? ''));
+    });
   }
 
   protected togglePayment(payment: Payment) {

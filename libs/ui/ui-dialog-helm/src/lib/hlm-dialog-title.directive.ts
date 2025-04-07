@@ -14,6 +14,6 @@ import type { ClassValue } from 'clsx';
 export class HlmDialogTitleDirective {
   public readonly userClass = input<ClassValue>('', { alias: 'class' });
   protected _computedClass = computed(() =>
-    hlm('text-lg font-semibold leading-none tracking-tight', this.userClass())
+    hlm('text-lg font-semibold leading-none tracking-tight', this.userClass()),
   );
 }

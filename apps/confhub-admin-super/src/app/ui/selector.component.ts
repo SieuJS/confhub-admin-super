@@ -1,9 +1,19 @@
-import { ChangeDetectionStrategy, Component, contentChildren, Directive, inject, InjectionToken, input, Signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  contentChildren,
+  Directive,
+  inject,
+  InjectionToken,
+  input,
+  Signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 export type Option<T> = {
   label: Signal<string>;
   value: Signal<T>;
-}
+};
 export const OPTION = new InjectionToken<Option<unknown>>('OPTION');
 
 @Directive({
@@ -13,7 +23,7 @@ export const OPTION = new InjectionToken<Option<unknown>>('OPTION');
     {
       provide: OPTION,
       useExisting: OptionDirective,
-      multi: true
+      multi: true,
     },
   ],
 })
@@ -26,17 +36,14 @@ export class OptionDirective<T> implements Option<T> {
   selector: 'app-selector',
   imports: [CommonModule],
   template: `
+    <select></select>
 
-  <select>
-    
-  </select>
-
-  @for (item of contentChild(); track $index) {
-      @if(item ) {
+    @for (item of contentChild(); track $index) {
+      @if (item) {
         <div class="flex items-center gap-2">
           <input
             type="radio"
-            name="selector" 
+            name="selector"
             [value]="item.value()"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
           />
@@ -45,15 +52,11 @@ export class OptionDirective<T> implements Option<T> {
           </label>
         </div>
       }
-  }
-
+    }
   `,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectorComponent {
   contentChild = contentChildren(OPTION);
-
-
-
 }

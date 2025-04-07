@@ -6,14 +6,13 @@ import { ConferenceRequest } from '../models/request/conference.request';
 import { ConferenceImportResponse } from '../models/response/conferenceImportResponse';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConferenceService {
+  httpClient = inject(HttpClient);
+  apiUrl = environment.apiUrl;
 
-  httpClient = inject(HttpClient) ; 
-  apiUrl = environment.apiUrl ;
-
-  getConference(params : ConferenceRequest | undefined) {
+  getConference(params: ConferenceRequest | undefined) {
     const url = `${this.apiUrl}/admin-conference/get`;
     return this.httpClient.get<ConferenceResponse>(url, { params });
   }
@@ -24,5 +23,4 @@ export class ConferenceService {
     formData.append('file', file);
     return this.httpClient.post<ConferenceImportResponse>(url, formData);
   }
-
 }

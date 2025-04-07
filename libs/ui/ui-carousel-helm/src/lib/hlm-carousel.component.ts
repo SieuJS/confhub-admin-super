@@ -54,7 +54,7 @@ export class HlmCarouselComponent {
   public options: InputSignal<Omit<EmblaOptionsType, 'axis'> | undefined> =
     input();
   public plugins: InputSignal<EmblaPluginType[]> = input(
-    [] as EmblaPluginType[]
+    [] as EmblaPluginType[],
   );
 
   protected emblaOptions: Signal<EmblaOptionsType> = computed(() => ({

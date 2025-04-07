@@ -27,7 +27,7 @@ export class HlmBreadcrumbSeparatorComponent {
   protected readonly _computedClass = computed(() =>
     hlm(
       '[&>ng-icon]:w-3.5 [&>ng-icon]:h-3.5 [&>ng-icon]:flex',
-      this.userClass()
-    )
+      this.userClass(),
+    ),
   );
 }

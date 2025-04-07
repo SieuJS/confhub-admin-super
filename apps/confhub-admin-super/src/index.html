@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -8,10 +8,10 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
       if (
-        // check if user had saved dark as their 
+        // check if user had saved dark as their
         // theme when accessing page before
         localStorage.theme === 'dark' ||
-        // or user's requesting dark color 
+        // or user's requesting dark color
         // scheme through operating system
         (!('theme' in localStorage) &&
           window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -25,7 +25,7 @@
         }
       } else {
         // else if we have access to the document and the element
-        // we remove the dark class to the html element and 
+        // we remove the dark class to the html element and
         // store the value light in the localStorage
         if (document && document.documentElement) {
           document.documentElement.classList.remove('dark');

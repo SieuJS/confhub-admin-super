@@ -8,9 +8,7 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/confhub-admin-super",
         "index": "apps/confhub-admin-super/src/index.html",
@@ -23,9 +21,7 @@
             "input": "apps/confhub-admin-super/public"
           }
         ],
-        "styles": [
-          "apps/confhub-admin-super/src/styles.scss"
-        ],
+        "styles": ["apps/confhub-admin-super/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -81,9 +77,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/confhub-admin-super/jest.config.ts"
       }

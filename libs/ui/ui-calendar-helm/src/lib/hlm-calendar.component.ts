@@ -100,14 +100,18 @@ import type { ClassValue } from 'clsx';
           <tbody role="rowgroup">
             <tr *brnCalendarWeek="let week" class="mt-2 flex w-full">
               @for (date of week; track dateAdapter.getTime(date)) {
-              <td
-                brnCalendarCell
-                class="data-[selected]:data-[outside]:bg-accent/50 data-[selected]:bg-accent relative h-9 w-9 p-0 text-center text-sm focus-within:relative focus-within:z-20 first:data-[selected]:rounded-l-md last:data-[selected]:rounded-r-md [&:has([aria-selected].day-range-end)]:rounded-r-md"
-              >
-                <button brnCalendarCellButton [date]="date" [class]="btnClass">
-                  {{ dateAdapter.getDate(date) }}
-                </button>
-              </td>
+                <td
+                  brnCalendarCell
+                  class="data-[selected]:data-[outside]:bg-accent/50 data-[selected]:bg-accent relative h-9 w-9 p-0 text-center text-sm focus-within:relative focus-within:z-20 first:data-[selected]:rounded-l-md last:data-[selected]:rounded-r-md [&:has([aria-selected].day-range-end)]:rounded-r-md"
+                >
+                  <button
+                    brnCalendarCellButton
+                    [date]="date"
+                    [class]="btnClass"
+                  >
+                    {{ dateAdapter.getDate(date) }}
+                  </button>
+                </td>
               }
             </tr>
           </tbody>
@@ -120,7 +124,7 @@ export class HlmCalendarComponent<T> {
   public readonly calendarClass = input<ClassValue>('');
 
   protected readonly _computedCalenderClass = computed(() =>
-    hlm('rounded-md border p-3', this.calendarClass())
+    hlm('rounded-md border p-3', this.calendarClass()),
   );
 
   /** Access the calendar i18n */
@@ -161,8 +165,8 @@ export class HlmCalendarComponent<T> {
   protected heading = computed(() =>
     this.i18n.formatHeader(
       this.dateAdapter.getMonth(this._calendar().focusedDate()),
-      this.dateAdapter.getYear(this._calendar().focusedDate())
-    )
+      this.dateAdapter.getYear(this._calendar().focusedDate()),
+    ),
   );
 
   protected readonly btnClass = hlm(
@@ -171,6 +175,6 @@ export class HlmCalendarComponent<T> {
     'data-[outside]:text-muted-foreground data-[outside]:opacity-50 data-[outside]:aria-selected:bg-accent/50 data-[outside]:aria-selected:text-muted-foreground data-[outside]:aria-selected:opacity-30',
     'data-[today]:bg-accent data-[today]:text-accent-foreground',
     'data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary data-[selected]:hover:text-primary-foreground data-[selected]:focus:bg-primary data-[selected]:focus:text-primary-foreground',
-    'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50'
+    'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50',
   );
 }
